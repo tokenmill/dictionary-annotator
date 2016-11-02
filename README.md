@@ -6,7 +6,7 @@ Dictionary Annotator is inspired by DKPro's [dictionary-annotator](https://githu
 
 * Annotates JCas with phrases from CSV file (supported by DKPro and MARKTABLE)
 * Supports multiple annotations with different features on the same block of text (not supported by DKPro nor MARKTABLE)
-* Configurable case sensitivity (supported by DKPro and MARKTABLE)
+* Configurable case sensitivity (supported by MARKTABLE)
 * Supports unlimited number of annotation features (supported by MARKTABLE)
 * Configurable tokenizer (not supported by DKPro nor MARKTABLE)
 
@@ -14,3 +14,4 @@ Dictionary Annotator is inspired by DKPro's [dictionary-annotator](https://githu
 
 * Phrase matching using stemmed tokens
 * Configurable CSV separator
+* Configurable ignored characters (as in MARKTABLE)
