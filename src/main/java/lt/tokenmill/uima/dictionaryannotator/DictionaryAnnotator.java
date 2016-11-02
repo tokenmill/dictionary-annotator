@@ -74,11 +74,18 @@ public class DictionaryAnnotator extends JCasAnnotator_ImplBase {
     private String dictionaryEncoding;
 
     /**
-     * Encoding of the dictionary file. Default value - true
+     * Is matching case sensitive?. Default value - true
      */
     public static final String PARAM_DICTIONARY_CASE_SENSITIVE = "caseSensitive";
     @ConfigurationParameter(name = PARAM_DICTIONARY_CASE_SENSITIVE, defaultValue = "true")
     private Boolean caseSensitive;
+
+    /**
+     * Which column in CSV file should be used when matching. Default value - 0
+     */
+    public static final String PARAM_PHRASE_COLUMN = "phraseColumn";
+    @ConfigurationParameter(name = PARAM_PHRASE_COLUMN, defaultValue = "0")
+    private Integer phraseColumn;
 
     private DictionaryTree tree;
     private DictionaryTokenizer tokenizer;
@@ -113,13 +120,13 @@ public class DictionaryAnnotator extends JCasAnnotator_ImplBase {
 
     private EntryMetadata createMetadata(String[] record) {
         EntryMetadata entryMetadata = new EntryMetadata();
-        entryMetadata.setText(record[0]);
+        entryMetadata.setText(record[this.phraseColumn]);
         entryMetadata.setColumns(record);
         return entryMetadata;
     }
 
     private String selectEntry(String[] record) {
-        return record[0];
+        return record[this.phraseColumn];
     }
 
     private DictionaryTokenizer loadTokenizer() {
