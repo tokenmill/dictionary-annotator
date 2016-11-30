@@ -10,6 +10,19 @@ Dictionary Annotator is inspired by DKPro's [dictionary-annotator](https://githu
 * Supports unlimited number of annotation features (supported by MARKTABLE)
 * Configurable tokenizer (not supported by DKPro nor MARKTABLE)
 
+## Usage
+
+Create Dictionary Annotator engine
+
+```java
+AnalysisEngineDescription description = AnalysisEngineFactory.createEngineDescription(DictionaryAnnotator.class,
+        DictionaryAnnotator.PARAM_DICTIONARY_LOCATION, "classpath:dictionary.csv",
+        DictionaryAnnotator.PARAM_ANNOTATION_TYPE, DictionaryEntry.class.getName(),
+        DictionaryAnnotator.PARAM_DICTIONARY_CASE_SENSITIVE, false,
+        DictionaryAnnotator.PARAM_FEATURE_MAPPING, asList(
+                "1 -> feature1", "2 -> feature2"));
+```
+
 ## TODO
 
 * Phrase matching using stemmed tokens
