@@ -15,7 +15,7 @@ Dictionary Annotator is inspired by DKPro's [dictionary-annotator](https://githu
 Dictionary (leaders.csv)
 
 ```csv
-Barack Ombama,US,2009-01-20,2017-01-20,president,100023
+Barack Obama,US,2009-01-20,2017-01-20,president,100023
 Dalia Grybauskaite,Lithuania,2009-06-12,,president,100049
 Dalia Grybauskaite,EU,2004-11-22,2009-06-01,commissioner,100050
 
