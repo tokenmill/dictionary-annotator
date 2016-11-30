@@ -39,6 +39,7 @@ Person(id=100049, from="2009-06-12", to=null, country="Lithuania", role="preside
 Person(id=100050, from="2004-11-22", to="2009-06-01", country="EU", role="commissioner")
 ```
 
+A working example can be found in [DictionaryAnnotatorTest](https://github.com/tokenmill/dictionary-annotator/blob/master/src/test/java/lt/tokenmill/uima/dictionaryannotator/DictionaryAnnotatorTest.java)
 
 ## Configuration
 
