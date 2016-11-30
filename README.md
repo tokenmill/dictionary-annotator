@@ -28,7 +28,7 @@ AnalysisEngineDescription description = AnalysisEngineFactory.createEngineDescri
         DictionaryAnnotator.PARAM_ANNOTATION_TYPE, Person.class.getName(),
         DictionaryAnnotator.PARAM_DICTIONARY_CASE_SENSITIVE, true,
         DictionaryAnnotator.PARAM_FEATURE_MAPPING, asList(
-                "1 -> country", "2 -> from", "3" -> to, "5 -> id", "4 -> role"));
+                "1 -> country", "2 -> from", "3 -> to", "5 -> id", "4 -> role"));
 ```
 
 Running it on text ```Barack Obama met Dalia Grybauskaite in Vilnius``` would produce 3 annotations:
