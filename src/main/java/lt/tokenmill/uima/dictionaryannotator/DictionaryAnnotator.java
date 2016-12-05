@@ -81,6 +81,13 @@ public class DictionaryAnnotator extends JCasAnnotator_ImplBase {
     private Boolean caseSensitive;
 
     /**
+     * Is matching accent sensitive ("éclair" is not the same as "eclair")?. Default value - true
+     */
+    public static final String PARAM_DICTIONARY_ACCENT_SENSITIVE = "accentSensitive";
+    @ConfigurationParameter(name = PARAM_DICTIONARY_ACCENT_SENSITIVE, defaultValue = "true")
+    private Boolean accentSensitive;
+
+    /**
      * Which column in CSV file should be used when matching. Default value - 0
      */
     public static final String PARAM_PHRASE_COLUMN = "phraseColumn";
@@ -89,12 +96,14 @@ public class DictionaryAnnotator extends JCasAnnotator_ImplBase {
 
     private DictionaryTree tree;
     private DictionaryTokenizer tokenizer;
+    private TextNormalizer textNormalizer;
 
     @Override
     public void initialize(UimaContext context) throws ResourceInitializationException {
         super.initialize(context);
         this.tree = new DictionaryTree();
         this.tokenizer = loadTokenizer();
+        this.textNormalizer = new TextNormalizer(this.caseSensitive, this.accentSensitive);
         this.featureIndexes = parseFeatureMapping();
         InputStream is = null;
         try {
@@ -104,10 +113,10 @@ public class DictionaryAnnotator extends JCasAnnotator_ImplBase {
             for (String[] record : csvReader) {
                 String entry = selectEntry(record);
                 EntryMetadata metadata = createMetadata(record);
-                List<String> tokens = this.tokenizer.tokenize(entry);
-                if (!caseSensitive) {
-                    tokens = tokens.stream().map(String::toLowerCase).collect(Collectors.toList());
-                }
+                List<String> tokens = this.tokenizer.tokenize(entry)
+                        .stream()
+                        .map(textNormalizer::normalize)
+                        .collect(Collectors.toList());
                 this.tree.addEntry(tokens, metadata);
             }
         } catch (IOException e) {
@@ -155,7 +164,7 @@ public class DictionaryAnnotator extends JCasAnnotator_ImplBase {
         while (iterator.hasNext()) {
             Token token = iterator.next();
             String tokenText = token.getCoveredText();
-            tokenText = this.caseSensitive ? tokenText : tokenText.toLowerCase();
+            tokenText = this.textNormalizer.normalize(tokenText);
             treeMatcher.proceed(token.getBegin(), token.getEnd(), tokenText);
             List<TreeMatch> matches = treeMatcher.getMatches();
 

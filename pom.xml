@@ -12,22 +12,13 @@
         <dkpro.version>1.8.0</dkpro.version>
         <slf4j.version>1.7.21</slf4j.version>
         <guava.version>19.0</guava.version>
+        <commons-lang.version>3.5</commons-lang.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
             <artifactId>de.tudarmstadt.ukp.dkpro.core.io.text-asl</artifactId>
-            <version>${dkpro.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-            <artifactId>de.tudarmstadt.ukp.dkpro.core.io.xmi-asl</artifactId>
-            <version>${dkpro.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-            <artifactId>de.tudarmstadt.ukp.dkpro.core.opennlp-asl</artifactId>
             <version>${dkpro.version}</version>
         </dependency>
         <dependency>
@@ -53,10 +44,22 @@
             <version>${guava.version}</version>
         </dependency>
         <dependency>
+            <!-- Needed for accent removal from strings -->
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>${slf4j.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+            <artifactId>de.tudarmstadt.ukp.dkpro.core.opennlp-asl</artifactId>
+            <version>${dkpro.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

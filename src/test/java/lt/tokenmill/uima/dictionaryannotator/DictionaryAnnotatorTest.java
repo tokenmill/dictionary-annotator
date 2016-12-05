@@ -37,7 +37,7 @@ public class DictionaryAnnotatorTest {
                 entries.stream().map(DictionaryEntry::getCoveredText).distinct().collect(Collectors.toList()));
         assertEquals(Lists.newArrayList("method", "method", "method", "method", "task", "task", "task", "task"),
                 entries.stream().map(DictionaryEntry::getBase).collect(Collectors.toList()));
-        assertEquals(Lists.<Integer>newArrayList(0),
+        assertEquals(Lists.newArrayList(0),
                 entries.stream().map(DictionaryEntry::getId).distinct().collect(Collectors.toList()));
     }
 
@@ -58,8 +58,47 @@ public class DictionaryAnnotatorTest {
                 entries.stream().map(DictionaryEntry::getCoveredText).distinct().collect(Collectors.toList()));
         assertEquals(Lists.newArrayList("computing machinery", "computing intelligence", "method", "task"),
                 entries.stream().map(DictionaryEntry::getBase).distinct().collect(Collectors.toList()));
-        assertEquals(Lists.<Integer>newArrayList(3, 2 ,1),
+        assertEquals(Lists.newArrayList(3, 2 ,1),
                 entries.stream().map(DictionaryEntry::getId).distinct().collect(Collectors.toList()));
+    }
+
+    @Test
+    public void testAccentInsensitive() throws Exception {
+        AnalysisEngineDescription description = AnalysisEngineFactory.createEngineDescription(DictionaryAnnotator.class,
+                DictionaryAnnotator.PARAM_DICTIONARY_LOCATION, "classpath:language-dictionary.csv",
+                DictionaryAnnotator.PARAM_ANNOTATION_TYPE, DictionaryEntry.class.getName(),
+                DictionaryAnnotator.PARAM_DICTIONARY_CASE_SENSITIVE, false,
+                DictionaryAnnotator.PARAM_DICTIONARY_ACCENT_SENSITIVE, false,
+                DictionaryAnnotator.PARAM_FEATURE_MAPPING, asList(
+                        "1 -> base"));
+        JCas jcas = process(description, loadText("wiki-language-with-accents.txt"));
+        Collection<DictionaryEntry> entries = JCasUtil.select(jcas, DictionaryEntry.class);
+        assertEquals(8, entries.size());
+        assertEquals(Lists.newArrayList("capacité d'exprimer", "lingvistinių ženklų",
+                "programmeringsspråk og språk", "gemäß ihrer genetischen"),
+                entries.stream().map(DictionaryEntry::getCoveredText).distinct().collect(Collectors.toList()));
+        assertEquals(Lists.newArrayList("fr", "fr-no-accents", "lt", "lt-no-accents",
+                "no", "no-no-accents", "de", "de-no-accents"),
+                entries.stream().map(DictionaryEntry::getBase).distinct().collect(Collectors.toList()));
+    }
+
+    @Test
+    public void testAccentSensitive() throws Exception {
+        AnalysisEngineDescription description = AnalysisEngineFactory.createEngineDescription(DictionaryAnnotator.class,
+                DictionaryAnnotator.PARAM_DICTIONARY_LOCATION, "classpath:language-dictionary.csv",
+                DictionaryAnnotator.PARAM_ANNOTATION_TYPE, DictionaryEntry.class.getName(),
+                DictionaryAnnotator.PARAM_DICTIONARY_CASE_SENSITIVE, false,
+                DictionaryAnnotator.PARAM_DICTIONARY_ACCENT_SENSITIVE, true,
+                DictionaryAnnotator.PARAM_FEATURE_MAPPING, asList(
+                        "1 -> base"));
+        JCas jcas = process(description, loadText("wiki-language-with-accents.txt"));
+        Collection<DictionaryEntry> entries = JCasUtil.select(jcas, DictionaryEntry.class);
+        assertEquals(4, entries.size());
+        assertEquals(Lists.newArrayList("capacité d'exprimer", "lingvistinių ženklų",
+                "programmeringsspråk og språk", "gemäß ihrer genetischen"),
+                entries.stream().map(DictionaryEntry::getCoveredText).distinct().collect(Collectors.toList()));
+        assertEquals(Lists.newArrayList("fr", "lt", "no", "de"),
+                entries.stream().map(DictionaryEntry::getBase).distinct().collect(Collectors.toList()));
     }
 
     private JCas process(AnalysisEngineDescription dictionaryDescription, String text) {
