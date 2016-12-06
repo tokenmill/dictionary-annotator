@@ -94,6 +94,13 @@ public class DictionaryAnnotator extends JCasAnnotator_ImplBase {
     @ConfigurationParameter(name = PARAM_PHRASE_COLUMN, defaultValue = "0")
     private Integer phraseColumn;
 
+    /**
+     * Separator used to separate columns in CSV. Default value - ,
+     */
+    public static final String PARAM_CSV_SEPARATOR = "csvSeparator";
+    @ConfigurationParameter(name = PARAM_CSV_SEPARATOR, defaultValue = ",")
+    private String csvSeparator;
+
     private DictionaryTree tree;
     private DictionaryTokenizer tokenizer;
     private TextNormalizer textNormalizer;
@@ -109,7 +116,8 @@ public class DictionaryAnnotator extends JCasAnnotator_ImplBase {
         try {
             URL phraseFileUrl = ResourceUtils.resolveLocation(this.dictionaryFile, context);
             is = phraseFileUrl.openStream();
-            CSVReader csvReader = new CSVReader(new InputStreamReader(is, this.dictionaryEncoding));
+            char separator = csvSeparator.charAt(0);
+            CSVReader csvReader = new CSVReader(new InputStreamReader(is, this.dictionaryEncoding), separator);
             for (String[] record : csvReader) {
                 String entry = selectEntry(record);
                 EntryMetadata metadata = createMetadata(record);

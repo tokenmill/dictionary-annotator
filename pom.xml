@@ -55,10 +55,29 @@
             <version>${slf4j.version}</version>
             <scope>provided</scope>
         </dependency>
+        <!-- TEST -->
+        <dependency>
+            <groupId>org.apache.uima</groupId>
+            <artifactId>ruta-core</artifactId>
+            <version>2.3.1</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
             <artifactId>de.tudarmstadt.ukp.dkpro.core.opennlp-asl</artifactId>
             <version>${dkpro.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+            <artifactId>de.tudarmstadt.ukp.dkpro.core.dictionaryannotator-asl</artifactId>
+            <version>${dkpro.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.opennlp</groupId>
+            <artifactId>opennlp-uima</artifactId>
+            <version>1.6.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>

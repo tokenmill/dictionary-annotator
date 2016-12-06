@@ -3,8 +3,10 @@ package lt.tokenmill.uima.dictionaryannotator;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
-import de.tudarmstadt.ukp.dkpro.core.opennlp.OpenNlpSegmenter;
+import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import lt.tokenmill.uima.dictionaryannotator.type.DictionaryEntry;
+import opennlp.uima.tokenize.SimpleTokenizer;
+import opennlp.uima.util.UimaUtil;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.fit.factory.AggregateBuilder;
@@ -26,6 +28,7 @@ public class DictionaryAnnotatorTest {
     public void testFeatureAssignment() throws Exception {
         AnalysisEngineDescription description = AnalysisEngineFactory.createEngineDescription(DictionaryAnnotator.class,
                 DictionaryAnnotator.PARAM_DICTIONARY_LOCATION, "classpath:nlproc-dictionary.csv",
+                DictionaryAnnotator.PARAM_TOKENIZER_CLASS, SimpleOpenNlpTokenizer.class.getName(),
                 DictionaryAnnotator.PARAM_ANNOTATION_TYPE, DictionaryEntry.class.getName(),
                 DictionaryAnnotator.PARAM_FEATURE_MAPPING, asList(
                         "1 -> base"));
@@ -45,6 +48,7 @@ public class DictionaryAnnotatorTest {
     public void testCaseInsensitive() throws Exception {
         AnalysisEngineDescription description = AnalysisEngineFactory.createEngineDescription(DictionaryAnnotator.class,
                 DictionaryAnnotator.PARAM_DICTIONARY_LOCATION, "classpath:nlproc-dictionary.csv",
+                DictionaryAnnotator.PARAM_TOKENIZER_CLASS, SimpleOpenNlpTokenizer.class.getName(),
                 DictionaryAnnotator.PARAM_ANNOTATION_TYPE, DictionaryEntry.class.getName(),
                 DictionaryAnnotator.PARAM_DICTIONARY_CASE_SENSITIVE, false,
                 DictionaryAnnotator.PARAM_FEATURE_MAPPING, asList(
@@ -58,7 +62,7 @@ public class DictionaryAnnotatorTest {
                 entries.stream().map(DictionaryEntry::getCoveredText).distinct().collect(Collectors.toList()));
         assertEquals(Lists.newArrayList("computing machinery", "computing intelligence", "method", "task"),
                 entries.stream().map(DictionaryEntry::getBase).distinct().collect(Collectors.toList()));
-        assertEquals(Lists.newArrayList(3, 2 ,1),
+        assertEquals(Lists.newArrayList(3, 2, 1),
                 entries.stream().map(DictionaryEntry::getId).distinct().collect(Collectors.toList()));
     }
 
@@ -66,6 +70,7 @@ public class DictionaryAnnotatorTest {
     public void testAccentInsensitive() throws Exception {
         AnalysisEngineDescription description = AnalysisEngineFactory.createEngineDescription(DictionaryAnnotator.class,
                 DictionaryAnnotator.PARAM_DICTIONARY_LOCATION, "classpath:language-dictionary.csv",
+                DictionaryAnnotator.PARAM_TOKENIZER_CLASS, SimpleOpenNlpTokenizer.class.getName(),
                 DictionaryAnnotator.PARAM_ANNOTATION_TYPE, DictionaryEntry.class.getName(),
                 DictionaryAnnotator.PARAM_DICTIONARY_CASE_SENSITIVE, false,
                 DictionaryAnnotator.PARAM_DICTIONARY_ACCENT_SENSITIVE, false,
@@ -86,6 +91,7 @@ public class DictionaryAnnotatorTest {
     public void testAccentSensitive() throws Exception {
         AnalysisEngineDescription description = AnalysisEngineFactory.createEngineDescription(DictionaryAnnotator.class,
                 DictionaryAnnotator.PARAM_DICTIONARY_LOCATION, "classpath:language-dictionary.csv",
+                DictionaryAnnotator.PARAM_TOKENIZER_CLASS, SimpleOpenNlpTokenizer.class.getName(),
                 DictionaryAnnotator.PARAM_ANNOTATION_TYPE, DictionaryEntry.class.getName(),
                 DictionaryAnnotator.PARAM_DICTIONARY_CASE_SENSITIVE, false,
                 DictionaryAnnotator.PARAM_DICTIONARY_ACCENT_SENSITIVE, true,
@@ -105,13 +111,10 @@ public class DictionaryAnnotatorTest {
         try {
             AggregateBuilder builder = new AggregateBuilder();
 
-            builder.add(AnalysisEngineFactory.createEngineDescription(OpenNlpSegmenter.class,
-                    OpenNlpSegmenter.PARAM_VARIANT, "maxent",
-                    OpenNlpSegmenter.PARAM_LANGUAGE, "en",
-                    OpenNlpSegmenter.PARAM_SEGMENTATION_MODEL_LOCATION,
-                    "classpath:/de/tudarmstadt/ukp/dkpro/core/opennlp/lib/sentence-en-maxent.bin",
-                    OpenNlpSegmenter.PARAM_TOKENIZATION_MODEL_LOCATION,
-                    "classpath:/de/tudarmstadt/ukp/dkpro/core/opennlp/lib/token-en-maxent.bin"));
+            builder.add(AnalysisEngineFactory.createEngineDescription(SimpleTokenizer.class,
+                    UimaUtil.SENTENCE_TYPE_PARAMETER, "uima.tcas.DocumentAnnotation",
+                    UimaUtil.TOKEN_TYPE_PARAMETER, Token.class.getName()));
+
             builder.add(dictionaryDescription);
             AnalysisEngine engine = AnalysisEngineFactory.createEngine(builder.createAggregateDescription());
             JCas jcas = engine.newJCas();
