@@ -13,6 +13,7 @@ Dictionary Annotator is inspired by DKPro's [dictionary-annotator](https://githu
 ## Performance
 
 Simple performance benchmark was done to compare with other alternatives. Numbers are averages from 3 trials.
+[20 Newsgroups](http://qwone.com/~jason/20Newsgroups/) texts were used.
 
 || Tokenization               | Time (Tokenization+Dictionary) | Tokens/sec |
 |----------------------------|---|--------------------------------|------------|
