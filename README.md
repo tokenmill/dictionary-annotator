@@ -10,6 +10,23 @@ Dictionary Annotator is inspired by DKPro's [dictionary-annotator](https://githu
 * Supports unlimited number of annotation features (supported by MARKTABLE)
 * Configurable tokenizer (not supported by DKPro nor MARKTABLE)
 
+## Performance
+
+Simple performance benchmark was done to compare with other alternatives. Numbers are averages from 3 trials.
+
+|| Tokenization               | Time (Tokenization+Dictionary) | Tokens/sec |
+|----------------------------|---|--------------------------------|------------|
+| DkPro dictionary-annotator | OpenNlp Simple Tokenizer | 368.2 sec                      | 8 724     |
+| Ruta MARKTABLE | OpenNlp Simple Tokenizer for dictionary, Ruta tokenizer for texts|21.9 sec | 146 684 |
+| **This dictionary annotator** |  OpenNlp Simple Tokenizer |1.7 sec | 1 889 637 |
+
+However this benchmark might be inaccurate because of following differences between annotators:
+
+ * DkPro requires text to be segmented into senteces an tokens. While testing text was marked as single sentence
+ * Ruta has its own rich tokenizer which takes significant amount of time
+
+Benchmarking can be done by running ```./benchmark.sh``` 
+
 ## Usage
 
 Dictionary (leaders.csv)
