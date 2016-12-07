@@ -4,4 +4,4 @@ IMPORT lt.tokenmill.uima.dictionaryannotator.type.DictionaryEntry;
 
 WORDTABLE dictionary = 'benchmark-dictionary.csv';
 
-Document{->MARKTABLE(DictionaryEntry, 1, dictionary, true, 0, "", 0, "base" = 2)};
+Document{->MARKTABLE(DictionaryEntry, 1, dictionary, false, 0, "", 0, "base" = 2)};
