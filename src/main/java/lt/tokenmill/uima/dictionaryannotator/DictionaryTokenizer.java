@@ -2,7 +2,7 @@ package lt.tokenmill.uima.dictionaryannotator;
 
 import java.util.List;
 
-interface DictionaryTokenizer {
+public interface DictionaryTokenizer {
 
     List<String> tokenize(String text);
 
