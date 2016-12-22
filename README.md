@@ -91,7 +91,7 @@ NOTE: Tokenizer must implement ```lt.tokenmill.uima.dictionaryannotator.Dictiona
 
 ### Accent-insensitive matching
 
-Dictionary annotator can match text iggnoring letter accents. To enable this feature set following configuration property to ```true```:
+Dictionary annotator can match text ignoring letter accents. To enable this feature set following configuration property to ```false```:
 
 ```java
 DictionaryAnnotator.PARAM_DICTIONARY_ACCENT_SENSITIVE
