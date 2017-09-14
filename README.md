@@ -96,7 +96,12 @@ Dictionary annotator can match text ignoring letter accents. To enable this feat
 ```java
 DictionaryAnnotator.PARAM_DICTIONARY_ACCENT_SENSITIVE
 ```
+## Known issues
 
+If some line in a long CSV doesn't have a closing quote character then the CSV reader might strugle to finish its job. If you know that one line corresponds to exactly one dictionary entry then check if there are lines that have exactly one quote character and fix those lines. One possible solution is to get rid of the problematic linee altogether, e.g. the quote character is `"` and e.g. with `sed` delete those lines in the same file:
+```bash
+sed -i -e '/^[^\"]*\"[^\"]*$/d' input-file.csv
+```
 
 ## TODO
 
