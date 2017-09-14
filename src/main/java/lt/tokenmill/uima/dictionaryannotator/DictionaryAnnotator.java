@@ -118,6 +118,7 @@ public class DictionaryAnnotator extends JCasAnnotator_ImplBase {
             is = phraseFileUrl.openStream();
             char separator = csvSeparator.charAt(0);
             CSVReader csvReader = new CSVReader(new InputStreamReader(is, this.dictionaryEncoding), separator);
+            int count = 0;
             for (String[] record : csvReader) {
                 String entry = selectEntry(record);
                 EntryMetadata metadata = createMetadata(record);
@@ -126,8 +127,10 @@ public class DictionaryAnnotator extends JCasAnnotator_ImplBase {
                         .map(textNormalizer::normalize)
                         .collect(Collectors.toList());
                 this.tree.addEntry(tokens, metadata);
+                count++;
             }
-        } catch (IOException e) {
+            getLogger().info(String.format("Loaded dictionary from '%s' with %d entries", phraseFileUrl, count));
+        } catch (Exception e) {
             throw new ResourceInitializationException(e);
         } finally {
             IOUtils.closeQuietly(is);
