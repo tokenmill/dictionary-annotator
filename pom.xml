@@ -4,8 +4,56 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <artifactId>dictionary-annotator</artifactId>
     <groupId>lt.tokenmill.uima</groupId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <modelVersion>4.0.0</modelVersion>
+    <name>Dictionary Annotator</name>
+    <description>UIMA Dictionary Annotator</description>
+    <url>https://github.com/tokenmill/dictionary-annotator</url>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Donatas Remeika</name>
+            <email>donatas.remeika@gmail.com</email>
+            <organization>TokenMill</organization>
+            <organizationUrl>http://www.tokenmill.lt</organizationUrl>
+        </developer>
+        <developer>
+            <name>Dainius Jocas</name>
+            <email>dainius.jocas@tokenmill.lt</email>
+            <organization>TokenMill</organization>
+            <organizationUrl>http://www.tokenmill.lt</organizationUrl>
+        </developer>
+        <developer>
+            <name>Žygimantas Medelis</name>
+            <email>zygimantas.medelis@gmail.com</email>
+            <organization>TokenMill</organization>
+            <organizationUrl>http://www.tokenmill.lt</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/tokenmill/dictionary-annotator.git</connection>
+        <developerConnection>scm:git:ssh://github.com:tokenmill/dictionary-annotator.git</developerConnection>
+        <url>https://github.com/tokenmill/dictionary-annotator/tree/master</url>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
     <properties>
         <project.typesystem>lt/tokenmill/DictionaryAnnotatorTypes.xml</project.typesystem>
@@ -87,6 +135,78 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <version>2.5</version>
+                        <executions>
+                            <execution>
+                                <id>attach-test</id>
+                                <goals>
+                                    <goal>test-jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <sourceFileExcludes>
+                                <exclude>**/type/DictionaryEntry.java</exclude>
+                                <exclude>**/type/DictionaryEntry_Type.java</exclude>
+                            </sourceFileExcludes>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <build>
 
