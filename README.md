@@ -30,6 +30,17 @@ Benchmarking can be done by running ```./benchmark.sh```
 
 ## Usage
 
+Maven dependency
+
+```xml
+<dependency>
+    <groupId>lt.tokenmill.uima</groupId>
+    <artifactId>dictionary-annotator</artifactId>
+    <version>0.1.1</version>
+</dependency>
+
+```
+
 Dictionary (leaders.csv)
 
 ```csv
