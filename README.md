@@ -1,3 +1,7 @@
+<a href="http://www.tokenmill.lt">
+      <img src=".github/tokenmill-logo.svg" width="125" height="125" align="right" />
+</a>
+
 # dictionary-annotator
 
 Dictionary Annotator is inspired by DKPro's [dictionary-annotator](https://github.com/dkpro/dkpro-core/tree/master/dkpro-core-dictionaryannotator-asl) and UIMA Ruta's [MARKTABLE](https://uima.apache.org/d/ruta-current/tools.ruta.book.html#ugr.tools.ruta.language.actions.marktable) action
@@ -119,3 +123,9 @@ sed -i -e '/^[^\"]*\"[^\"]*$/d' input-file.csv
 * Phrase matching using stemmed tokens
 * Configurable CSV separator
 * Configurable ignored characters (as in MARKTABLE)
+
+## License
+
+Copyright &copy; 2019 [TokenMill UAB](http://www.tokenmill.lt).
+
+Distributed under the The Apache License, Version 2.0.
